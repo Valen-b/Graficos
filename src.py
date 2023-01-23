@@ -2,7 +2,6 @@ import csv
 from coinmetrics.api_client import CoinMetricsClient
 import pandas
 
-
 def imprimir_csv():
     
     with open('Base_de_datos.csv', newline='') as f:
@@ -17,21 +16,23 @@ def imprimir_api():
     metrics = client.get_asset_metrics(assets= 'btc', 
                                         metrics = [
                                             'PriceUSD',
-                                            'AdrActCnt',
-                                            'CapMrktCurUSD',
-                                            'CapMVRVCur',
-                                            'NVTAdj',
-                                            'VelCur1yr',
-                                            'TxCnt',
-                                            'TxTfrValAdjUSD'
-                                            'SplyCur',
-                                            'HashRate'
+                                            'CapRealUSD',
+                                            #'AdrActCnt',
+                                            #'CapMrktCurUSD',
+                                            #'CapMVRVCur',
+                                            #'NVTAdj',
+                                            #'VelCur1yr',
+                                            #'TxCnt',
+                                            #'TxTfrValAdjUSD',
+                                            #'SplyCur',
+                                            #'HashRate'
                                         ],
-                                        start_time = '2018-01-01',
-                                        end_time = '2022-01-01',
+                                        start_time = '2022-01-10',
+                                        end_time = '2023-01-22',
                                         frequency = '1d')
-    print(client)
-    print(metrics)
+
+    metrics_P = pandas.DataFrame(metrics)
+    print(metrics_P['time'][0])
 
 #imprimir_csv()
 imprimir_api()
