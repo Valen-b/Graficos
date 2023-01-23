@@ -2,9 +2,14 @@ import csv
 from coinmetrics.api_client import CoinMetricsClient
 import pandas
 
+def fix_nulls(s):
+    for line in s:
+        yield line.replace('\0', ' ')
 def imprimir_csv():
 
-    with open('Base_de_datos.csv', newline='') as f:
+#with open('Base_de_datos.csv', newline='') as f:
+    
+    with fix_nulls( open('Base_de_datos.csv', newline='') ) as f:
         reader = csv.reader(f, delimiter='	', quotechar='|')
         i = 0
         for row in reader:
