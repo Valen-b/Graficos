@@ -11,10 +11,10 @@ def imprimir_csv():
             i += 1
 
 def imprimir_api():
-    client = CoinMetricsClient()
+    #client = CoinMetricsClient()
+    print("asd")
+    #print(client)
 
-    print(client)
 
-
-#imprimir_csv()
+imprimir_csv()
 imprimir_api()
