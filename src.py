@@ -2,6 +2,7 @@ import csv
 from coinmetrics.api_client import CoinMetricsClient
 import pandas
 import matplotlib.pyplot as plt
+import math
 
 def graph(data):
     precio = []
@@ -9,6 +10,7 @@ def graph(data):
         precio = precio + [ row[1] ]
     plt.plot( precio )
     plt.ylabel('some numbers')
+    plt.yscale("log")
     plt.show()
 
 def imprimir_csv():
@@ -46,4 +48,4 @@ def imprimir_api():
     print(metrics_P['time'][0])
 
 imprimir_csv()
-imprimir_api()
+#imprimir_api()
