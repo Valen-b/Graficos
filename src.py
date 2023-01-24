@@ -4,20 +4,15 @@ import pandas
 import matplotlib.pyplot as plt
 import math
 
-def graph(data,data2):
-
-    data3 = []
+def graph(data,headers): # data: es un dataframe de pandas. Lista con todos los "column headers" a graficar. Siempre se plotea en función del tiempo.
 
     i = 0
-    for el in data:
-        data[i] = float(el)
-        data3 = data3 + [i]
-        i += 1
+    
 
 
     #print(len(data3), " AAAAA ", len(data2))
 
-    plt.plot(data3, data, label = "precio")
+    plt.plot( data, label = "precio")
     #plt.plot(data3, data2, label = "precio/2")
     plt.legend()
     plt.yscale("log")
@@ -34,28 +29,30 @@ def imprimir_csv():
             i += 1
         graph(datos,1)
 
-def imprimir_api():
+def import_data_coinmetrics():
     client = CoinMetricsClient()
     metrics = client.get_asset_metrics(assets= 'btc', 
                                         metrics = [
                                             'PriceUSD',
                                             'CapRealUSD',
                                             'SplyCur',
-                                            #'AdrActCnt',
-                                            #'CapMrktCurUSD',
-                                            #'CapMVRVCur',
-                                            #'NVTAdj',
-                                            #'VelCur1yr',
-                                            #'TxCnt',
-                                            #'TxTfrValAdjUSD',
-                                            #'SplyCur',
-                                            #'HashRate'
                                         ],
                                         start_time = '2010-07-18',
                                         #end_time = '2022-01-10',
                                         frequency = '1d')
 
     metrics_P = pandas.DataFrame(metrics)
+
+    
+
+    print(metrics_P)
+
+    def round_float(n):
+        return round(float(n),2)
+
+    metrics_P['PriceUSD'] = list(map(round_float, metrics_P['PriceUSD']))
+
+    print(metrics_P)
 
     #realized_price = []
     #i = 0
@@ -74,7 +71,7 @@ def imprimir_api():
     #for el in metrics_P['PriceReal']:
     #    print(el)
 
-    graph(metrics_P['PriceUSD'], metrics_P['PriceUSD'])
+    #graph(metrics_P['PriceUSD'])
 
 #imprimir_csv()
-imprimir_api()
+import_data_coinmetrics()
