@@ -4,15 +4,25 @@ import pandas
 import matplotlib.pyplot as plt
 import math
 
-def graph(data):
-    precio = []
-    for row in data:
-        precio = precio + [ row[1] ]
-    plt.plot( precio )
-    plt.ylabel('some numbers')
+def graph(data,data2):
+
+    data3 = []
+
+    i = 0
+    for el in data:
+        data[i] = float(el)
+        data3 = data3 + [i]
+        i += 1
+
+
+    #print(len(data3), " AAAAA ", len(data2))
+
+    plt.plot(data3, data, label = "precio")
+    #plt.plot(data3, data2, label = "precio/2")
+    plt.legend()
     plt.yscale("log")
     plt.show()
-
+    
 def imprimir_csv():
     datos = []
     with open('Base_de_datos.csv', newline='', encoding = "utf-16") as f:
@@ -22,7 +32,7 @@ def imprimir_csv():
             #print("Numero de linea: ", i, row[0], row[1], row[2])
             datos = datos + [( row[0] , float(row[1]), float(row[2]) )]
             i += 1
-        graph(datos)
+        graph(datos,1)
 
 def imprimir_api():
     client = CoinMetricsClient()
@@ -30,6 +40,7 @@ def imprimir_api():
                                         metrics = [
                                             'PriceUSD',
                                             'CapRealUSD',
+                                            'SplyCur',
                                             #'AdrActCnt',
                                             #'CapMrktCurUSD',
                                             #'CapMVRVCur',
@@ -40,12 +51,30 @@ def imprimir_api():
                                             #'SplyCur',
                                             #'HashRate'
                                         ],
-                                        start_time = '2022-01-10',
-                                        end_time = '2023-01-22',
+                                        start_time = '2010-07-18',
+                                        #end_time = '2022-01-10',
                                         frequency = '1d')
 
     metrics_P = pandas.DataFrame(metrics)
-    print(metrics_P['time'][0])
 
-imprimir_csv()
-#imprimir_api()
+    #realized_price = []
+    #i = 0
+    #for el in metrics_P['PriceUSD']:
+    #    realized_price = realized_price + [i]
+    #    i += 1
+  
+
+    #print(metrics_P)
+
+    #metrics_2 = metrics_P.assign(PriceReal=realized_price)
+
+    #print(metrics_P)
+
+
+    #for el in metrics_P['PriceReal']:
+    #    print(el)
+
+    graph(metrics_P['PriceUSD'], metrics_P['PriceUSD'])
+
+#imprimir_csv()
+imprimir_api()
