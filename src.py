@@ -6,14 +6,21 @@ import math
 
 def graph(data,headers): # data: es un dataframe de pandas. Lista con todos los "column headers" a graficar. Siempre se plotea en función del tiempo.
 
-    i = 0
+    xaxis =  list(range(0, len(data[headers[0]]) ))
     
-
-
+    color = 1
+    for header in headers:
+        print("hacemos el plot con el headder " ,header)
+        plt.plot(xaxis, data[header] ,color, label = header)
+        color = color+1
+    
     #print(len(data3), " AAAAA ", len(data2))
 
-    plt.plot( data, label = "precio")
+    
     #plt.plot(data3, data2, label = "precio/2")
+    #handles, labels = plt.gca().get_legend_handles_labels()
+    #by_label = dict(zip(labels, handles))
+    #plt.legend(by_label.values(), by_label.keys())
     plt.legend()
     plt.yscale("log")
     plt.show()
@@ -43,7 +50,6 @@ def import_data_coinmetrics():
 
     metrics_P = pandas.DataFrame(metrics)
 
-    
 
     print(metrics_P)
 
@@ -52,7 +58,11 @@ def import_data_coinmetrics():
 
     metrics_P['PriceUSD'] = list(map(round_float, metrics_P['PriceUSD']))
 
+    metrics_P['CapRealUSD'] = list(map(round_float, metrics_P['CapRealUSD']))
+
     print(metrics_P)
+
+    graph(metrics_P, ['PriceUSD', 'CapRealUSD'] ) #
 
     #realized_price = []
     #i = 0
