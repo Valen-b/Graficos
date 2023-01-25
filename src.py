@@ -29,30 +29,32 @@ def imprimir_csv():
             i += 1
         graph(datos,1)
 
-def import_data_coinmetrics():
+def import_data_coinmetrics(asset_par, metrics_par):
+    
+    
     client = CoinMetricsClient()
-    metrics = client.get_asset_metrics(assets= 'btc', 
-                                        metrics = [
-                                            'PriceUSD',
-                                            'CapRealUSD',
-                                            'SplyCur',
-                                        ],
+    metrics = client.get_asset_metrics(assets= asset_par, 
+                                        metrics = metrics_par,
                                         start_time = '2010-07-18',
                                         #end_time = '2022-01-10',
-                                        frequency = '1d')
+                                        #frequency = '1d'
+                                        )
 
     metrics_P = pandas.DataFrame(metrics)
 
     
+
 
     print(metrics_P)
 
     def round_float(n):
         return round(float(n),2)
 
-    metrics_P['PriceUSD'] = list(map(round_float, metrics_P['PriceUSD']))
+    for el in metrics_par: #hace que todas las métricas importadas sean números en vez de texto, y los redondea a 2 decimales
+        metrics_P[el] = list(map(round_float, metrics_P[el]))
 
     print(metrics_P)
+
 
     #realized_price = []
     #i = 0
@@ -60,8 +62,6 @@ def import_data_coinmetrics():
     #    realized_price = realized_price + [i]
     #    i += 1
   
-
-    #print(metrics_P)
 
     #metrics_2 = metrics_P.assign(PriceReal=realized_price)
 
@@ -74,4 +74,5 @@ def import_data_coinmetrics():
     #graph(metrics_P['PriceUSD'])
 
 #imprimir_csv()
-import_data_coinmetrics()
+
+import_data_coinmetrics('btc', ['PriceUSD','CapRealUSD','SplyCur'])
