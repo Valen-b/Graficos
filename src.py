@@ -22,6 +22,7 @@ def graph(data,headers): # data: es un dataframe de pandas. Lista con todos los 
     #handles, labels = plt.gca().get_legend_handles_labels()
     #by_label = dict(zip(labels, handles))
     #plt.legend(by_label.values(), by_label.keys())
+    
     plt.legend()
     plt.yscale("log")
     plt.show()
@@ -39,6 +40,8 @@ def imprimir_csv():
 
 def import_data_coinmetrics(asset_par, metrics_par):
     
+    def round_float(n):
+        return round(float(n),2)
     
     client = CoinMetricsClient()
     metrics = client.get_asset_metrics(assets= asset_par, 
@@ -48,14 +51,9 @@ def import_data_coinmetrics(asset_par, metrics_par):
                                         #frequency = '1d'
                                         )
 
-    metrics_P = pandas.DataFrame(metrics)
-
-
-    def round_float(n):
-        return round(float(n),2)
-
-
     #correción de los datos:
+
+    metrics_P = pandas.DataFrame(metrics)
 
     for el in metrics_par: #hace que todas las métricas importadas sean números en vez de texto, y los redondea a 2 decimales
         metrics_P[el] = list(map(round_float, metrics_P[el]))
@@ -67,26 +65,18 @@ def import_data_coinmetrics(asset_par, metrics_par):
 
 def indicador_1(datos):
 
-    return datos
+    datos['PriceRealUSD'] = 0.0 #crea una nueva columa en 'datos' con un Header 'PriceRealUSD' y le asgina tantas filas con el valor 0.0 como filas tenga el dataframe.
 
-    #realized_price = []
-    #i = 0
-    #for el in metrics_P['PriceUSD']:
-    #    realized_price = realized_price + [i]
-    #    i += 1
-  
-    #metrics_2 = metrics_P.assign(PriceReal=realized_price)
-
-    #for el in metrics_P['PriceReal']:
-    #    print(el)
-
-    #graph(metrics_P['PriceUSD'])
+    i = 0
+    for el in datos['PriceRealUSD']:
+        datos['PriceRealUSD'][i] = datos['CapRealUSD'][i] / datos['SplyCur'][i]
+        i += 1
 
 
 datos = import_data_coinmetrics('btc', ['PriceUSD','CapRealUSD','SplyCur'])
 
-datos_nuevo = indicador_1(datos)
+indicador_1(datos)
 
-print(datos_nuevo)
+print(datos)
 
-graph(datos, ['PriceUSD', 'CapRealUSD'] ) #
+graph(datos, ['PriceUSD', 'PriceRealUSD']) #toma el dataframe (primer parámetro) e imprime en un gráfico los valores de tantos Headers como le sea indicado en la lista (segundo parámetro).
