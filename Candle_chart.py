@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import mpl_finance as mpf
 import numpy as np
 
+#hola
+
 # Generate sample data
 price = np.array([100, 105, 110, 100, 95, 105, 120, 125, 115, 110, 115, 105])
 time = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
